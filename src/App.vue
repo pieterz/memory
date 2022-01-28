@@ -12,10 +12,12 @@
     />
   </section>
   <h2>{{ status }}</h2>
+  <button @click="restartGame">Restart Game</button>
 </template>
 
 <script>
-import { ref, watch } from 'vue'
+import _ from 'lodash'
+import { computed, ref, watch } from 'vue'
 import Card from './components/Card.vue'
 
 export default {
@@ -26,12 +28,44 @@ export default {
   setup() {
     const cardList = ref([])
     const userSelection = ref([])
-    const status = ref('')
+
+    const status = computed(() => {
+      if (remaingPairs.value === 0) {
+        return "Player wins!"
+      } else {
+        return `Remaing Pairs: ${remaingPairs.value}`
+      }
+    })
+
+    const remaingPairs = computed(() => {
+      const remaingCards = cardList.value.filter(
+        card => card.matched === false
+      ).length
+
+      return remaingCards / 2
+    })
+
+    const shuffleCards = () => {
+      cardList.value = _.shuffle(cardList.value)
+    }
+
+    const restartGame = () => {
+      shuffleCards()
+
+      cardList.value = cardList.value.map((card, index) => {
+        return {
+          ...card,
+          matched: false,
+          visible: false,
+          position: index
+        }
+      })
+    }
 
     for (let i = 0; i < 16; i++) {
       cardList.value.push({
         value: i,
-        visible: false,
+        visible: true,
         position: i,
         matched: false
       })
@@ -53,13 +87,9 @@ export default {
         const cardTwo = currentValue[1]
 
         if (cardOne.faceValue === cardTwo.faceValue) {
-          status.value = 'Matched'
-
           cardList.value[cardOne.position] = true
           cardList.value[cardOne.position] = true
         } else {
-          status.value = "Mismatch!"
-
           cardList.value[cardOne.position].visible = false
           cardList.value[cardTwo.position].visible = false
         }
@@ -74,7 +104,10 @@ export default {
       cardList,
       flipCard,
       userSelection,
-      status
+      status,
+      remaingPairs,
+      shuffleCards,
+      restartGame
     }
   }
 
