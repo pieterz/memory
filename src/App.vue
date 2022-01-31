@@ -117,7 +117,7 @@ export default {
       }
     }
     watch(remainingPairs, currentValue => {
-      if (currentValue === 0) {
+      if (currentValue === 7) {
         launchConfetti()
       }
     })
@@ -176,7 +176,7 @@ h2 {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  background:linear-gradient(rgba(0,0,0,0.1), rgba(255,255,255,0.1)), url("/images/gis_background_v2.jpg");
+  background:linear-gradient(rgba(0,0,0,0.3), rgba(255,255,255,0.3)), url("/images/gis_background_v2.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
