@@ -117,7 +117,7 @@ export default {
       }
     }
     watch(remainingPairs, currentValue => {
-      if (currentValue === 7) {
+      if (currentValue === 0) {
         launchConfetti()
       }
     })
